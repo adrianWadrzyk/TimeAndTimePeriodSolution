@@ -148,27 +148,6 @@ namespace TimeAndTimePeriod
                 long Tseconds = Math.Abs(t2.Seconds % 60);
                 return new Time((int)Thours, (int)Tminutes, (int)Tseconds);
             }
-            /*   long Thours = Math.Abs(t2.Seconds / 3600);
-               long Tminutes = Math.Abs(t2.Seconds % 3600 / 60);
-               long Tseconds = Math.Abs(t2.Seconds % 60);
-
-               Console.WriteLine(Thours);
-               Console.WriteLine(Tminutes);
-               Console.WriteLine(Tseconds);
-
-               byte h = (byte)(24 - Thours);
-               byte m = (byte)(60 - Tminutes);
-               byte s = (byte)(60 - Tseconds);
-
-               if (s == 60)
-                   s = t1.Seconds;
-               if (m == 60)
-                   m = t1.Minutes;
-               if (h == 24)
-                   h = t1.Hours;
-
-               return new Time(h,m,s); */
-
         }
         public static Time Plus(Time t, TimePeriod tp)
         {
@@ -195,22 +174,7 @@ namespace TimeAndTimePeriod
             return t1;
         }
 
-        public Time Minus(TimePeriod tp)
-        {
-            double hoursToMinus = (tp.Seconds / 3600) % 24;
-            if (hoursToMinus == 0)
-                hoursToMinus = 24;
-            double minutesToMinus = (tp.Seconds % 3600 / 60) % 60;
-            if (minutesToMinus == 0)
-                minutesToMinus = 60;
-            double secondsToMinus = tp.Seconds % 60;
-            if (secondsToMinus == 0)
-                secondsToMinus = 60;
-            byte h = ((byte)Math.Abs(Hours - hoursToMinus));
-            byte m = ((byte)Math.Abs(Minutes - minutesToMinus));
-            byte s = ((byte)Math.Abs(Seconds - secondsToMinus));
-            return new Time(h, m, s);
-        }
+        
     }
 
     public struct TimePeriod : IEquatable<TimePeriod>, IComparable<TimePeriod>
