@@ -7,6 +7,7 @@ namespace TimeAndTimePeriod
         public byte Hours { get; }
         public byte Minutes { get; }
         public byte Seconds { get; }
+        #region constructor for Time(hour, minutes, seconds)
         public Time(int hour = 0, int minutes = 0, int seconds = 0)
         {
             this.Hours = (byte)hour;
@@ -14,6 +15,8 @@ namespace TimeAndTimePeriod
             this.Seconds = (byte)seconds;
             checkParam();
         }
+        #endregion
+        #region constructor for Time(string)
         public Time(string time)
         {
             time = time.Trim();
@@ -71,6 +74,8 @@ namespace TimeAndTimePeriod
                 throw new ArgumentException();
             }
         }
+        #endregion
+        #region checkParam function
         private void checkParam()
         {
             if (Hours > 23 || Minutes > 59 || Seconds > 59)
@@ -78,6 +83,8 @@ namespace TimeAndTimePeriod
                 throw new ArgumentOutOfRangeException();
             }
         }
+        #endregion
+        #region implement IEquatable interfejs
         public bool Equals(Time other)
         {
             if (Object.ReferenceEquals(this, other)) return true;
@@ -92,6 +99,8 @@ namespace TimeAndTimePeriod
                 return false;
         }
         public override int GetHashCode() => (Hours, Minutes, Seconds).GetHashCode();
+        #endregion
+        #region implement IComparable interfejs
         public int CompareTo(Time other)
         {
             if (other == null) return 1;
@@ -106,10 +115,14 @@ namespace TimeAndTimePeriod
             else
                 return Seconds.CompareTo(other.Seconds);
         }
+        #endregion
+        #region implement ToString method
         public override string ToString()
         {
             return $"{Hours:00}:{Minutes:00}:{Seconds:00}";
         }
+        #endregion
+        #region ovveride operators == , != , > , < , >=, <=, +
         public static bool operator ==(Time operand1, Time operand2) => Equals(operand1, operand2);
         public static bool operator !=(Time operand1, Time operand2) => !(operand1 == operand2);
         public static bool operator >(Time operand1, Time operand2) => operand1.CompareTo(operand2) > 0;
@@ -149,6 +162,8 @@ namespace TimeAndTimePeriod
                 return new Time((int)Thours, (int)Tminutes, (int)Tseconds);
             }
         }
+        #endregion
+        #region methods
         public static Time Plus(Time t, TimePeriod tp)
         {
             long Tphours = tp.Seconds / 3600;
@@ -174,18 +189,19 @@ namespace TimeAndTimePeriod
             return t1;
         }
 
-        
+        #endregion
     }
 
     public struct TimePeriod : IEquatable<TimePeriod>, IComparable<TimePeriod>
     {
         public long Seconds { get; set; }
-
+        #region constructor for TimePeriod(hours, minutes, seconds)
         public TimePeriod(double hours = 0, double minutes = 0, double seconds = 0)
         {
             Seconds = (long)((Math.Floor(hours * 3600)) + (Math.Floor(minutes * 60)) + Math.Floor(seconds));
         }
-
+        #endregion
+        #region constructor for TimePeriod(string)
         public TimePeriod(string time)
         {
             time = time.Trim();
@@ -243,6 +259,8 @@ namespace TimeAndTimePeriod
 
             Seconds = (hours * 3600) + (minutes * 60) + seconds;
         }
+        #endregion
+        #region implement IEquatable interface
         public bool Equals(TimePeriod other)
         {
             if (Object.ReferenceEquals(this, other)) return true;
@@ -257,7 +275,8 @@ namespace TimeAndTimePeriod
                 return false;
         }
         public override int GetHashCode() => (Seconds).GetHashCode();
-
+        #endregion
+        #region implement IComparable interface
         public int CompareTo(TimePeriod other)
         {
             if (Equals(other)) return 0;
@@ -265,7 +284,8 @@ namespace TimeAndTimePeriod
             Console.WriteLine(other.Seconds);
             return Seconds.CompareTo(other.Seconds);
         }
-
+        #endregion
+        #region override ToString method
         public override string ToString() // reprezentacja tekstowa TimePeriod
         {
             long hours = Seconds / 3600;
@@ -273,7 +293,8 @@ namespace TimeAndTimePeriod
             long seconds = Seconds % 60;
             return $"{hours}:{minutes:00}:{seconds:00}";
         }
-
+        #endregion
+        #region override operators ==, !=, >, <, >=, <=, *
         public static bool operator ==(TimePeriod operand1, TimePeriod operand2) => Equals(operand1, operand2);
         public static bool operator !=(TimePeriod operand1, TimePeriod operand2) => !(operand1 == operand2);
         public static bool operator >(TimePeriod operand1, TimePeriod operand2) => operand1.CompareTo(operand2) > 0;
@@ -288,6 +309,8 @@ namespace TimeAndTimePeriod
         public static TimePeriod operator -(TimePeriod tp1, double seconds) => new TimePeriod(seconds: tp1.Seconds - seconds);
         public static TimePeriod operator *(TimePeriod tp1, double multiplier) => new TimePeriod(seconds: tp1.Seconds * multiplier);
         public static TimePeriod operator *(double multiplier, TimePeriod tp1) => new TimePeriod(seconds: tp1.Seconds * multiplier);
+        #endregion
+        #region other methods for TimePeriod
         public TimePeriod Plus(TimePeriod other) => new TimePeriod(seconds: Seconds + other.Seconds);
         public static TimePeriod Plus(TimePeriod p1, TimePeriod p2) => new TimePeriod(seconds: p1.Seconds + p2.Seconds);
         public static TimePeriod PlusSeconds(TimePeriod p1, double seconds) => new TimePeriod(seconds: p1.Seconds + seconds); // dodawanie sekund
@@ -295,5 +318,6 @@ namespace TimeAndTimePeriod
         public static TimePeriod PlusHours(TimePeriod p1, double hours) => new TimePeriod(seconds: p1.Seconds + hours * 3600); // dodawanie godzin
         public TimePeriod Minus(TimePeriod other) => new TimePeriod(seconds: Seconds - other.Seconds); // odejmowanie TimePeriod od TimePeriod
         public static TimePeriod Minus(TimePeriod p1, TimePeriod p2) => new TimePeriod(seconds: p1.Seconds - p2.Seconds); // odejmowanie TimePeriod od TimePeriod statyczne
+        #endregion
     }
 }
